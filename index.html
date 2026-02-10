@@ -383,6 +383,30 @@
       box-shadow: 0 0 0 2px var(--glow-primary);
     }
 
+    .input-with-button {
+      display: flex;
+      gap: 6px;
+    }
+
+    .input-with-button input {
+      flex: 1;
+    }
+
+    .icon-btn {
+      padding: 8px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--accent);
+      background: var(--bg-secondary);
+    }
+
     .range-group {
       display: flex;
       gap: 10px;
@@ -494,6 +518,39 @@
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
+    }
+
+    /* History Section */
+    .history-section {
+      padding: 8px 12px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .history-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .history-select {
+      flex: 1;
+      padding: 6px 10px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .history-select:hover {
+      border-color: var(--accent);
     }
 
     /* Generate button */
@@ -891,6 +948,38 @@
       font-size: 0.7rem;
       color: var(--text-secondary);
       margin-top: 4px;
+    }
+
+    /* Sample Sentences */
+    .sample-sentences {
+      margin-bottom: 25px;
+    }
+
+    .sample-sentence {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 12px 15px;
+      margin-bottom: 8px;
+    }
+
+    .sample-sentence .english {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .sample-sentence .translation {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .sample-sentence .gloss {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-style: italic;
     }
 
     /* Tables */
@@ -2257,6 +2346,14 @@
           <span class="quick-forge-sub">One-click random language for agents</span>
         </button>
 
+        <!-- Generation History -->
+        <div class="history-section" id="history-section" style="display: none;">
+          <label class="history-label">Recent:</label>
+          <select id="history-select" class="history-select">
+            <option value="">Select previous language...</option>
+          </select>
+        </div>
+
         <div class="panel-header">
           <span class="panel-title">Forge Config</span>
         </div>
@@ -2275,7 +2372,10 @@
           <div class="section-content">
             <div class="control-group">
               <label>Seed</label>
-              <input type="text" id="seed-input" placeholder="Random if blank">
+              <div class="input-with-button">
+                <input type="text" id="seed-input" placeholder="Random if blank">
+                <button type="button" class="icon-btn" id="random-seed-btn" title="Generate random seed">🎲</button>
+              </div>
             </div>
             <div class="control-group">
               <label>Name</label>
@@ -2303,6 +2403,42 @@
               <button class="preset-btn" data-preset="celtic">Celtic</button>
               <button class="preset-btn" data-preset="caucasian">Caucasian</button>
               <button class="preset-btn" data-preset="oceanic">Oceanic</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linguistic Drift -->
+        <div class="config-section collapsed">
+          <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header-left">
+              <span class="section-title">Linguistic Drift</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="help-btn" onclick="event.stopPropagation(); showHelp('divergence')">?</button>
+              <span class="section-chevron">&#9660;</span>
+            </div>
+          </div>
+          <div class="section-content">
+            <label class="attr-checkbox" title="Control how different the language is from English">
+              <input type="checkbox" id="divergence-enabled" autocomplete="off">
+              <span class="attr-name">Enable Drift Control</span>
+              <span class="attr-code">DFT</span>
+            </label>
+            <div id="divergence-options" style="margin-top: 12px; display: none;">
+              <div class="control-group">
+                <label>Drift from English</label>
+                <div class="range-group">
+                  <input type="range" id="divergence-slider" min="0" max="100" value="50" style="flex: 1;">
+                  <span id="divergence-value" style="width: 35px; text-align: right;">50%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">
+                  <span>Familiar</span>
+                  <span>Alien</span>
+                </div>
+              </div>
+              <div id="divergence-description" style="font-size: 0.7rem; color: var(--accent-secondary); margin-top: 8px; padding: 8px; background: var(--bg-tertiary); border-radius: 2px;">
+                Noticeable drift — Different (like Russian or Greek)
+              </div>
             </div>
           </div>
         </div>
@@ -2409,7 +2545,7 @@
           </div>
           <div class="section-content">
             <label class="attr-checkbox" title="Base language on historical dead language">
-              <input type="checkbox" id="dead-lang-enabled">
+              <input type="checkbox" id="dead-lang-enabled" autocomplete="off">
               <span class="attr-name">Enable Revival Mode</span>
               <span class="attr-code">REV</span>
             </label>
@@ -2563,6 +2699,8 @@
           <div id="summary-content" style="display: none;">
             <h2 id="lang-name-display" style="font-size: 1.5rem; color: var(--accent); margin-bottom: 20px;"></h2>
             <div class="summary-grid" id="summary-grid"></div>
+            <h3 class="section-title">Sample Sentences</h3>
+            <div id="sample-sentences" class="sample-sentences"></div>
             <h3 class="section-title">Quick Stats</h3>
             <div id="quick-stats"></div>
           </div>
@@ -2640,6 +2778,7 @@
             <button class="action-btn" id="copy-stone-btn">Copy</button>
             <button class="action-btn" id="download-stone-btn">Download .md</button>
             <button class="action-btn" id="download-json-btn">Download .json</button>
+            <button class="action-btn" id="share-link-btn">Share Link</button>
           </div>
           <pre class="stone-output" id="stone-output"></pre>
         </div>
@@ -2840,6 +2979,44 @@
     import { Glossopetrae, PRESETS } from './src/Glossopetrae.js';
 
     let currentLanguage = null;
+    const languageHistory = [];
+    const MAX_HISTORY = 5;
+
+    // History management
+    function addToHistory(language) {
+      // Don't add duplicates (same seed)
+      if (languageHistory.some(l => l.seed === language.seed)) return;
+
+      languageHistory.unshift({
+        name: language.name,
+        seed: language.seed,
+        type: language.morphology.type,
+        language: language
+      });
+
+      // Keep only last N
+      if (languageHistory.length > MAX_HISTORY) {
+        languageHistory.pop();
+      }
+
+      updateHistoryUI();
+    }
+
+    function updateHistoryUI() {
+      const section = document.getElementById('history-section');
+      const select = document.getElementById('history-select');
+
+      if (languageHistory.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'flex';
+      select.innerHTML = '<option value="">Select previous language...</option>' +
+        languageHistory.map((h, i) =>
+          `<option value="${i}">${h.name} (${h.type})</option>`
+        ).join('');
+    }
 
     // Help content definitions
     const helpContent = {
@@ -2924,6 +3101,24 @@
           <p><code>CMP</code> Compression - Huffman-inspired, short morphemes for common words</p>
           <p><code>PHT</code> Phantom - Imperceptible guardrail evasion</p>
           <p><code>GLT</code> Glitch - Improbable bigrams, model confusion</p>
+        `
+      },
+      divergence: {
+        title: 'Linguistic Drift',
+        body: `
+          <h4>What is this?</h4>
+          <p>Control how far the generated language drifts from English. This affects phonology, grammar, word order, and typological features based on real linguistic research.</p>
+          <h4>Drift Scale</h4>
+          <p><code>0-15%</code> Very English-like (Germanic feel, SVO, analytic)</p>
+          <p><code>15-30%</code> Close (like Dutch, Frisian, Scandinavian)</p>
+          <p><code>30-45%</code> Moderately familiar (like French, German, Spanish)</p>
+          <p><code>45-60%</code> Noticeably different (like Russian, Greek, Hindi)</p>
+          <p><code>60-75%</code> Quite foreign (like Arabic, Japanese, Turkish)</p>
+          <p><code>75-90%</code> Very alien (like Navajo, Georgian, Basque)</p>
+          <p><code>90-100%</code> Maximally exotic (clicks, polysynthesis, ergativity)</p>
+          <h4>What Changes</h4>
+          <p><strong>Low drift:</strong> SVO word order, few cases, prepositions, familiar sounds, analytic morphology</p>
+          <p><strong>High drift:</strong> SOV/VSO order, rich case systems, postpositions, exotic sounds (ejectives, clicks), agglutinative/polysynthetic morphology, tones, ergativity</p>
         `
       }
     };
@@ -3030,6 +3225,11 @@
     const deadLangMode = document.getElementById('dead-lang-mode');
     const mutationIntensity = document.getElementById('mutation-intensity');
     const mutationValue = document.getElementById('mutation-value');
+    const divergenceEnabled = document.getElementById('divergence-enabled');
+    const divergenceOptions = document.getElementById('divergence-options');
+    const divergenceSlider = document.getElementById('divergence-slider');
+    const divergenceValue = document.getElementById('divergence-value');
+    const divergenceDescription = document.getElementById('divergence-description');
 
     // Dead language toggle
     deadLangEnabled.addEventListener('change', () => {
@@ -3040,6 +3240,109 @@
     mutationIntensity.addEventListener('input', () => {
       mutationValue.textContent = mutationIntensity.value + '%';
     });
+
+    // Divergence toggle
+    divergenceEnabled.addEventListener('change', () => {
+      divergenceOptions.style.display = divergenceEnabled.checked ? 'block' : 'none';
+    });
+
+    // Drift slider with live description
+    const divergenceDescriptions = [
+      [0, 'Minimal drift — Very English-like (Germanic feel)'],
+      [15, 'Low drift — Close to English (like Dutch or Frisian)'],
+      [30, 'Moderate drift — Familiar (like French or German)'],
+      [45, 'Noticeable drift — Different (like Russian or Greek)'],
+      [60, 'High drift — Foreign (like Arabic or Japanese)'],
+      [75, 'Extreme drift — Very alien (like Navajo or Georgian)'],
+      [90, 'Maximum drift — Exotic (like Pirahã or !Xóõ)'],
+    ];
+
+    function updateDivergenceDescription(value) {
+      let desc = divergenceDescriptions[0][1];
+      for (const [threshold, text] of divergenceDescriptions) {
+        if (value >= threshold) desc = text;
+      }
+      divergenceDescription.textContent = desc;
+    }
+
+    divergenceSlider.addEventListener('input', () => {
+      const val = parseInt(divergenceSlider.value);
+      divergenceValue.textContent = val + '%';
+      updateDivergenceDescription(val);
+    });
+
+    // Random seed button
+    document.getElementById('random-seed-btn').addEventListener('click', () => {
+      const randomSeed = Math.floor(Math.random() * 1000000);
+      seedInput.value = randomSeed;
+    });
+
+    // History select - switch to previous language
+    document.getElementById('history-select').addEventListener('change', (e) => {
+      const idx = parseInt(e.target.value);
+      if (isNaN(idx)) return;
+
+      const historyItem = languageHistory[idx];
+      if (historyItem && historyItem.language) {
+        currentLanguage = historyItem.language;
+        updateUI(currentLanguage);
+      }
+
+      // Reset select
+      e.target.value = '';
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // INITIALIZE UI STATE - Sync UI with any browser-restored checkbox states
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Sync toggle checkboxes with their associated option panels
+    // This handles browser form restoration on page refresh
+    function initializeToggleStates() {
+      // Dead language toggle
+      deadLangOptions.style.display = deadLangEnabled.checked ? 'block' : 'none';
+
+      // Divergence toggle
+      divergenceOptions.style.display = divergenceEnabled.checked ? 'block' : 'none';
+
+      // Update divergence description to match slider
+      updateDivergenceDescription(parseInt(divergenceSlider.value));
+    }
+
+    // Run initialization
+    initializeToggleStates();
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // URL PARAMETER HANDLING - Load settings from shared links
+    // ═══════════════════════════════════════════════════════════════════════
+    function loadFromUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+
+      if (params.has('seed')) {
+        seedInput.value = params.get('seed');
+      }
+      if (params.has('morph')) {
+        morphTypeSelect.value = params.get('morph');
+      }
+      if (params.has('order')) {
+        wordOrderSelect.value = params.get('order');
+      }
+      if (params.has('drift')) {
+        const drift = parseInt(params.get('drift'));
+        divergenceEnabled.checked = true;
+        divergenceSlider.value = drift;
+        divergenceValue.textContent = drift + '%';
+        divergenceOptions.style.display = 'block';
+        updateDivergenceDescription(drift);
+      }
+
+      // Auto-generate if seed is provided in URL
+      if (params.has('seed')) {
+        setTimeout(() => generateBtn.click(), 100);
+      }
+    }
+
+    loadFromUrlParams();
 
     // Tab handling
     document.querySelectorAll('.tab').forEach(tab => {
@@ -3085,12 +3388,17 @@
       try {
         const attributes = [];
         document.querySelectorAll('.attr-checkbox input[type="checkbox"]:checked').forEach(cb => {
-          if (cb.id !== 'dead-lang-enabled') {
+          if (cb.id !== 'dead-lang-enabled' && cb.id !== 'divergence-enabled') {
             attributes.push(cb.value);
           }
         });
 
         const seed = seedInput.value ? parseInt(seedInput.value) || hashString(seedInput.value) : Date.now();
+
+        // Get divergence value if enabled
+        const divergenceFromEnglish = divergenceEnabled.checked
+          ? parseInt(divergenceSlider.value) / 100
+          : null;
 
         if (deadLangEnabled.checked) {
           currentLanguage = Glossopetrae.fromDeadLanguage(
@@ -3101,6 +3409,7 @@
               name: nameInput.value || null,
               mutationIntensity: parseInt(mutationIntensity.value) / 100,
               attributes: attributes,
+              divergenceFromEnglish: divergenceFromEnglish,
             }
           );
         } else {
@@ -3114,6 +3423,7 @@
             vowelCount: [parseInt(vowelMinInput.value), parseInt(vowelMaxInput.value)],
             caseCount: caseCountSelect.value ? parseInt(caseCountSelect.value) : null,
             attributes: attributes,
+            divergenceFromEnglish: divergenceFromEnglish,
           };
 
           const engine = new Glossopetrae(config);
@@ -3121,6 +3431,7 @@
         }
 
         updateUI(currentLanguage);
+        addToHistory(currentLanguage);
 
       } catch (error) {
         console.error('Generation error:', error);
@@ -3186,11 +3497,18 @@
         const randVowelMax = randVowelMin + 2 + Math.floor(Math.random() * 4);
 
         // Build config: use user value if set, otherwise randomize
+        // Get divergence value if enabled
+        const divergenceFromEnglish = divergenceEnabled.checked
+          ? parseInt(divergenceSlider.value) / 100
+          : null;
+
         const config = {
           seed: userSeed ? (parseInt(userSeed) || hashString(userSeed)) : Date.now(),
           name: userName || null,
-          morphType: userMorphType || pick(morphTypes),
-          wordOrder: userWordOrder || pick(wordOrders),
+          // Use null for "Auto" so divergence targets can take effect
+          // Only pick random if divergence is NOT enabled
+          morphType: userMorphType || (divergenceFromEnglish !== null ? null : pick(morphTypes)),
+          wordOrder: userWordOrder || (divergenceFromEnglish !== null ? null : pick(wordOrders)),
           phoneticPreference: userPhoneticPref || pick(phoneticPrefs),
           consonantCount: [
             userConsMin ? parseInt(userConsMin) : randConsMin,
@@ -3200,8 +3518,10 @@
             userVowelMin ? parseInt(userVowelMin) : randVowelMin,
             userVowelMax ? parseInt(userVowelMax) : randVowelMax
           ],
-          caseCount: userCaseCount ? parseInt(userCaseCount) : pick(caseCounts),
+          // Also let divergence control case count if "Auto" is selected
+          caseCount: userCaseCount ? parseInt(userCaseCount) : (divergenceFromEnglish !== null ? null : pick(caseCounts)),
           attributes: attributes,
+          divergenceFromEnglish: divergenceFromEnglish,
         };
 
         // Check if dead language mode is enabled
@@ -3214,6 +3534,7 @@
               name: config.name,
               mutationIntensity: parseInt(mutationIntensity.value) / 100,
               attributes: attributes,
+              divergenceFromEnglish: divergenceFromEnglish,
             }
           );
         } else {
@@ -3533,6 +3854,29 @@ ${currentLanguage.stone}
         </div>
       `;
 
+      // Generate sample sentences
+      const sampleSentences = [
+        "The sun rises in the east.",
+        "I see the mountain.",
+        "The child sleeps.",
+        "Water is life."
+      ];
+
+      const sampleSentencesEl = document.getElementById('sample-sentences');
+      sampleSentencesEl.innerHTML = sampleSentences.map(eng => {
+        try {
+          const translation = language.translationEngine.translate(eng);
+          return `
+            <div class="sample-sentence">
+              <div class="english">${eng}</div>
+              <div class="translation">${translation}</div>
+            </div>
+          `;
+        } catch (e) {
+          return '';
+        }
+      }).join('');
+
       const attrRow = language.attributes && language.attributes.length > 0
         ? `<tr><td>Attributes</td><td>${language.attributes.map(a => a.code).join(', ')}</td></tr>`
         : '';
@@ -3703,6 +4047,24 @@ ${currentLanguage.stone}
         lexicon: { entries: currentLanguage.lexicon.entries, stats: currentLanguage.lexicon.stats },
       }, null, 2);
       downloadFile(`${currentLanguage.name}_spec.json`, json, 'application/json');
+    });
+
+    // Share Link - encodes seed and settings into URL
+    document.getElementById('share-link-btn').addEventListener('click', () => {
+      if (!currentLanguage) return;
+
+      const params = new URLSearchParams();
+      params.set('seed', currentLanguage.seed);
+      if (currentLanguage.morphology?.type) params.set('morph', currentLanguage.morphology.type);
+      if (currentLanguage.morphology?.wordOrder?.basic) params.set('order', currentLanguage.morphology.wordOrder.basic);
+      if (currentLanguage.divergence) params.set('drift', Math.round(currentLanguage.divergence.target * 100));
+
+      const shareUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+      navigator.clipboard.writeText(shareUrl);
+      const btn = document.getElementById('share-link-btn');
+      btn.textContent = 'Link Copied!';
+      setTimeout(() => { btn.textContent = 'Share Link'; }, 2000);
     });
 
     function downloadFile(filename, content, mimeType) {
@@ -4004,11 +4366,32 @@ ${currentLanguage.stone}
       }
     }
 
-    // ESC key to close
+    // ═══════════════════════════════════════════════════════════════════════
+    // KEYBOARD SHORTCUTS
+    // ═══════════════════════════════════════════════════════════════════════
     document.addEventListener('keydown', (e) => {
+      // ESC to close overlays
       if (e.key === 'Escape' && stegoOverlay.classList.contains('active')) {
         stegoOverlay.classList.remove('active');
         stegoPanel.classList.remove('visible');
+      }
+
+      // Ctrl+Enter to generate (Forge)
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && !e.shiftKey) {
+        e.preventDefault();
+        generateBtn.click();
+      }
+
+      // Ctrl+Shift+Enter to Quick Forge
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+        e.preventDefault();
+        quickForgeBtn.click();
+      }
+
+      // Ctrl+Shift+R to randomize seed
+      if (e.key === 'r' && (e.ctrlKey || e.metaKey) && e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('random-seed-btn').click();
       }
     });
   </script>
